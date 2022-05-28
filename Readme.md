@@ -9,6 +9,7 @@ Open terminal:
  - Run: `docker-compose build`
  - Run: `docker-compose up -d`
  - Run: `docker-compose exec php /bin/bash`
+ - Run: `composer install`
  - Run: `symfony console doctrine:migrations:migrate`
  - Run: `bin/console app:company-load`
 
