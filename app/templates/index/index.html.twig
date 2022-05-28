@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Company Historical Data Search Page {% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin: 1em auto;
+            width: 95%;
+        }
+    </style>
+
+
+    {{ form(form) }}
+
+    <div id="container"></div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function (){
+            // alert('hello');
+
+            $("#company_historical_data_search_startDate, #company_historical_data_search_endDate").datepicker(
+                {
+                    dateFormat: 'yy-mm-dd'
+                }
+            );
+            $("").datepicker();
+        })
+    </script>
+
+    {% if chartData  %}
+    <script>
+        anychart.onDocumentReady(function () {
+
+            var data = new Array();
+
+            {% for item in  chartData %}
+                data.push([ '{{ item['date'] }}', {{ item['open'] }}, {{ item['high'] }}, {{ item['low'] }}, {{ item['close'] }} ]);
+            {% endfor %}
+
+
+            table = anychart.data.table();
+            table.addData(data);
+            // mapping the data
+            mapping = table.mapAs();
+            mapping.addField('open', 1);
+            mapping.addField('high', 2);
+            mapping.addField('low', 3);
+            mapping.addField('close', 4);
+
+
+            chart = anychart.stock();
+            chart.plot(0).ohlc(mapping).name('{{ data['symbol']}}');
+            chart.title('{{ data['symbol']}} - company price historical data');
+            chart.container('container');
+            chart.draw();
+        });
+    </script>
+    {% endif %}
+{% endblock %}

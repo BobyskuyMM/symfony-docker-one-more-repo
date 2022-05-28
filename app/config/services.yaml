@@ -1,0 +1,35 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    company_source_url: '%env(COMPANY_SOURCE_URL)%'
+    yh_finance_api_url: '%env(YH_FINANCE_API_URL)%'
+    yh_finance_api_key: '%env(YH_FINANCE_API_KEY)%'
+    from_email: "admin@symfony.com"
+    verify_ssl: false
+    timeout: 30
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    symbol_checker:
+        class: App\Service\CompanySymbolChecker
+        arguments: ['@http_client']
+
+    App\EventListener\SendInfoEmailSubscriber:
+        arguments: ['@mailer', '@parameter_bag']
+        tags:
+            - { name: kernel.event_subscriber, event: info.email }

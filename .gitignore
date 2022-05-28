@@ -1,0 +1,23 @@
+
+###> symfony/framework-bundle ###
+/app/.env.local
+/app/.env.local.php
+/app/.env.*.local
+/app/config/secrets/prod/prod.decrypt.private.php
+/app/public/bundles/
+/app/var/
+/app/vendor/
+###< symfony/framework-bundle ###
+
+###> friendsofphp/php-cs-fixer ###
+/app/.php-cs-fixer.php
+/app/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+/app/.phpunit.result.cache
+/app/phpunit.xml
+###< phpunit/phpunit ###
+
+/mysql/
+/.idea/
